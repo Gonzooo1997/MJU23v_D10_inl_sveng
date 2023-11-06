@@ -1,18 +1,23 @@
-﻿namespace MJU23v_D10_inl_sveng
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace MJU23v_D10_inl_sveng
 {
     internal class Program
     {
         private static List<SweEngGloss> dictionary;
 
-
-        class SweEngGloss
+        private class SweEngGloss
         {
             public string WordSwe, WordEng;
+
             public SweEngGloss(string wordSwe, string wordEng)
             {
                 WordSwe = wordSwe;
                 WordEng = wordEng;
             }
+
             public SweEngGloss(string line)
             {
                 string[] words = line.Split('|');
@@ -20,106 +25,46 @@
                 WordEng = words[1];
             }
         }
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
             string defaultFile = "..\\..\\..\\dict\\sweeng.lis";
             Console.WriteLine("Welcome to the dictionary app!");
             do
             {
                 Console.Write("> ");
-                string[] argument = Console.ReadLine().Split();
-                string command = argument[0];
+                string[] arguments = Console.ReadLine().Split();
+                string command = arguments[0];
+
                 if (command == "quit")
                 {
                     Console.WriteLine("Goodbye!");
                 }
                 else if (command == "load")
                 {
-
                     LoadDictionary(arguments);
                 }
                 else if (command == "list")
                 {
-                    foreach (SweEngGloss gloss in dictionary)
-                    {
-                        Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
-                    }
+                    ListDictionary();
                 }
                 else if (command == "new")
                 {
-                    if (argument.Length == 3)
-                    {
-                        dictionary.Add(new SweEngGloss(argument[1], argument[2]));
-                    }
-                    else if (argument.Length == 1)
-                    {
-                        Console.WriteLine("Write word in Swedish: ");
-                        string s = Console.ReadLine();
-                        Console.Write("Write word in English: ");
-                        string e = Console.ReadLine();
-                        dictionary.Add(new SweEngGloss(s, e));
-                    }
+                    AddNewWord(arguments);
                 }
                 else if (command == "delete")
                 {
-                    if (argument.Length == 3)
-                    {
-                        int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++)
-                        {
-                            SweEngGloss gloss = dictionary[i];
-                            if (gloss.word_swe == argument[1] && gloss.word_eng == argument[2])
-                                index = i;
-                        }
-                        dictionary.RemoveAt(index);
-                    }
-                    else if (argument.Length == 1)
-                    {
-                        Console.WriteLine("Write word in Swedish: ");
-                        string s = Console.ReadLine();
-                        Console.Write("Write word in English: ");
-                        string e = Console.ReadLine();
-                        int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++)
-                        {
-                            SweEngGloss gloss = dictionary[i];
-                            if (gloss.word_swe == s && gloss.word_eng == e)
-                                index = i;
-                        }
-                        dictionary.RemoveAt(index);
-                    }
+                    DeleteWord(arguments);
                 }
                 else if (command == "translate")
                 {
-                    if (argument.Length == 2)
-                    {
-                        foreach (SweEngGloss gloss in dictionary)
-                        {
-                            if (gloss.word_swe == argument[1])
-                                Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                            if (gloss.word_eng == argument[1])
-                                Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
-                        }
-                    }
-                    else if (argument.Length == 1)
-                    {
-                        Console.WriteLine("Write word to be translated: ");
-                        string s = Console.ReadLine();
-                        foreach (SweEngGloss gloss in dictionary)
-                        {
-                            if (gloss.word_swe == s)
-                                Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                            if (gloss.word_eng == s)
-                                Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
-                        }
-                    }
+                    TranslateWord(arguments);
                 }
                 else
                 {
                     Console.WriteLine($"Unknown command: '{command}'");
                 }
-            }
-            while (true);
+            } while (true);
         }
 
         private static void LoadDictionary(string[] arguments)
@@ -149,6 +94,7 @@
                 Console.WriteLine($"An error occurred: {e.Message}");
             }
         }
+
         private static void ListDictionary()
         {
             if (dictionary == null)
@@ -210,6 +156,7 @@
                 }
             }
         }
+
         private static int FindIndex(string wordSwe, string wordEng)
         {
             for (int i = 0; i < dictionary.Count; i++)
@@ -236,6 +183,7 @@
                 TranslateAndPrint(s);
             }
         }
+
         private static void TranslateAndPrint(string word)
         {
             foreach (SweEngGloss gloss in dictionary)
@@ -253,7 +201,5 @@
             }
             Console.WriteLine("Word not found in the dictionary.");
         }
-
-
     }
 }
