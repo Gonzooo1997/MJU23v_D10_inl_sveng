@@ -210,7 +210,18 @@
                 }
             }
         }
-
+        private static int FindIndex(string wordSwe, string wordEng)
+        {
+            for (int i = 0; i < dictionary.Count; i++)
+            {
+                SweEngGloss gloss = dictionary[i];
+                if (gloss.WordSwe == wordSwe && gloss.WordEng == wordEng)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
 
 
