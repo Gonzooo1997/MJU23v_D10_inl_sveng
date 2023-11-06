@@ -223,7 +223,19 @@
             return -1;
         }
 
-
+        private static void TranslateWord(string[] arguments)
+        {
+            if (arguments.Length == 2)
+            {
+                TranslateAndPrint(arguments[1]);
+            }
+            else if (arguments.Length == 1)
+            {
+                Console.WriteLine("Write word to be translated: ");
+                string s = Console.ReadLine();
+                TranslateAndPrint(s);
+            }
+        }
 
 
 
