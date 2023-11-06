@@ -2,18 +2,22 @@
 {
     internal class Program
     {
-        static List<SweEngGloss> dictionary;
+        private static List<SweEngGloss> dictionary;
+
+
         class SweEngGloss
         {
-            public string word_swe, word_eng;
-            public SweEngGloss(string word_swe, string word_eng)
+            public string WordSwe, WordEng;
+            public SweEngGloss(string wordSwe, string wordEng)
             {
-                this.word_swe = word_swe; this.word_eng = word_eng;
+                WordSwe = wordSwe;
+                WordEng = wordEng;
             }
             public SweEngGloss(string line)
             {
                 string[] words = line.Split('|');
-                this.word_swe = words[0]; this.word_eng = words[1];
+                WordSwe = words[0];
+                WordEng = words[1];
             }
         }
         static void Main(string[] args)
@@ -142,6 +146,75 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine($"An error occurred:
+                Console.WriteLine($"An error occurred: {e.Message}");
+            }
+        }
+        private static void ListDictionary()
+        {
+            if (dictionary == null)
+            {
+                Console.WriteLine("Dictionary not loaded. Use 'load' command.");
+                return;
+            }
+
+            foreach (SweEngGloss gloss in dictionary)
+            {
+                Console.WriteLine($"{gloss.WordSwe,-10}  - {gloss.WordEng,-10}");
+            }
+        }
+
+        private static void AddNewWord(string[] arguments)
+        {
+            if (arguments.Length == 3)
+            {
+                dictionary.Add(new SweEngGloss(arguments[1], arguments[2]));
+            }
+            else if (arguments.Length == 1)
+            {
+                Console.WriteLine("Write word in Swedish: ");
+                string s = Console.ReadLine();
+                Console.Write("Write word in English: ");
+                string e = Console.ReadLine();
+                dictionary.Add(new SweEngGloss(s, e));
+            }
+        }
+
+        private static void DeleteWord(string[] arguments)
+        {
+            if (arguments.Length == 3)
+            {
+                int index = FindIndex(arguments[1], arguments[2]);
+                if (index != -1)
+                {
+                    dictionary.RemoveAt(index);
+                }
+                else
+                {
+                    Console.WriteLine("Word not found in the dictionary.");
+                }
+            }
+            else if (arguments.Length == 1)
+            {
+                Console.WriteLine("Write word in Swedish: ");
+                string s = Console.ReadLine();
+                Console.Write("Write word in English: ");
+                string e = Console.ReadLine();
+                int index = FindIndex(s, e);
+                if (index != -1)
+                {
+                    dictionary.RemoveAt(index);
+                }
+                else
+                {
+                    Console.WriteLine("Word not found in the dictionary.");
+                }
+            }
+        }
+
+
+
+
+
+
     }
 }
