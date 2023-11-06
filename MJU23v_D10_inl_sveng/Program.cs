@@ -236,7 +236,23 @@
                 TranslateAndPrint(s);
             }
         }
-
+        private static void TranslateAndPrint(string word)
+        {
+            foreach (SweEngGloss gloss in dictionary)
+            {
+                if (gloss.WordSwe == word)
+                {
+                    Console.WriteLine($"English for {gloss.WordSwe} is {gloss.WordEng}");
+                    return;
+                }
+                if (gloss.WordEng == word)
+                {
+                    Console.WriteLine($"Swedish for {gloss.WordEng} is {gloss.WordSwe}");
+                    return;
+                }
+            }
+            Console.WriteLine("Word not found in the dictionary.");
+        }
 
 
     }
