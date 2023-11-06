@@ -7,6 +7,7 @@ namespace MJU23v_D10_inl_sveng
     internal class Program
     {
         private static List<SweEngGloss> dictionary;
+        private static string defaultFile = "C://Users//gonza//source//repos//MJU23v_D10_inl_sveng//MJU23v_D10_inl_sveng//dict";
 
         private class SweEngGloss
         {
@@ -28,7 +29,7 @@ namespace MJU23v_D10_inl_sveng
 
         private static void Main(string[] args)
         {
-            string defaultFile = "..\\..\\..\\dict\\sweeng.lis";
+            
             Console.WriteLine("Welcome to the dictionary app!");
             do
             {
