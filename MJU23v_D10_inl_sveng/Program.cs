@@ -31,34 +31,8 @@
                 }
                 else if (command == "load")
                 {
-                    if (argument.Length == 2)
-                    {
-                        using (StreamReader sr = new StreamReader(argument[1]))
-                        {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
-                            string line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = sr.ReadLine();
-                            }
-                        }
-                    }
-                    else if (argument.Length == 1)
-                    {
-                        using (StreamReader sr = new StreamReader(defaultFile))
-                        {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
-                            string line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = sr.ReadLine();
-                            }
-                        }
-                    }
+
+                    LoadDictionary(arguments);
                 }
                 else if (command == "list")
                 {
@@ -143,5 +117,31 @@
             }
             while (true);
         }
+
+        private static void LoadDictionary(string[] arguments)
+        {
+            string file = (arguments.Length == 2) ? arguments[1] : defaultFile;
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(file))
+                {
+                    dictionary = new List<SweEngGloss>();
+                    string line = sr.ReadLine();
+                    while (line != null)
+                    {
+                        SweEngGloss gloss = new SweEngGloss(line);
+                        dictionary.Add(gloss);
+                        line = sr.ReadLine();
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine($"File not found: '{file}'");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred:
     }
 }
